@@ -198,11 +198,7 @@ object bonoNormal {
 object bonoAjuste {
 
 	method valor(empleado) {
-		return if (empleado.asistenciaPerfecta()) {
-			100
-		} else {
-			0
-		}
+		return if (empleado.asistenciaPerfecta()) 100 else 0
 	}
 
 }
@@ -210,11 +206,7 @@ object bonoAjuste {
 object bonoDemagogico {
 
 	method valor(empleado) {
-		return if (empleado.neto() < 18000) {
-			500
-		} else {
-			300
-		}
+		return if (empleado.neto() < 18000) 500 else 300
 	}
 
 }
