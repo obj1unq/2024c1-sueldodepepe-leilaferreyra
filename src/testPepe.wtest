@@ -1,10 +1,102 @@
 import pepe.*
 
-describe "Sueldo Pepe" {
-	
-	test "Test 1" {
-		//TODO: Implementame
+describe "Sueldo de Pepe" {
+
+	test "Pepe es cadete. 
+          Tiene bono por resultado de monto fijo
+          Tiene bono por presentismo normal.
+          Falto tres dias.
+          Su sueldo es de $20800" {
+		pepe.categoria(cadete)
+		pepe.bonoXResultados(bonoMontoFijo)
+		pepe.bonoXPresentismo(bonoNormal)
+		pepe.faltas(3)
+		assert.equals(20800, pepe.sueldo())
 	}
 
-	
+	test "Pepe es gerente. 
+          Tiene bono por resultado de porcentaje, 
+          Tiene bono por presentismo nulo. 
+          Su sueldo es de $16500." {
+		pepe.categoria(gerente)
+		pepe.bonoXResultados(bonoPorcentaje)
+		pepe.bonoXPresentismo(bonoXPresentismoNulo)
+		assert.equals(16500, pepe.sueldo())
+	}
+
+	test "Pepe es cadete. 
+          Tiene bono por resultados de porcentaje.
+          Tiene bono por presentismo normal.
+          Nunca faltó.
+          Su sueldo es de $24000." {
+		pepe.categoria(cadete)
+		pepe.bonoXResultados(bonoPorcentaje)
+		pepe.bonoXPresentismo(bonoNormal)
+		pepe.faltas(0)
+		assert.equals(24000, pepe.sueldo())
+	}
+
+	test "Pepe es cadete.
+          Tiene bono por resultados de porcentaje, 
+          Tiene bono por presentismo normal. 
+          Falto 1 día. 
+          Su sueldo es de $23000" {
+		pepe.categoria(cadete)
+		pepe.bonoXResultados(bonoPorcentaje)
+		pepe.bonoXPresentismo(bonoNormal)
+		pepe.faltas(1)
+		assert.equals(23000, pepe.sueldo())
+	}
+
+	test "Pepe tiene asistencia perfecta" {
+		pepe.faltas(0)
+		assert.that(pepe.asistenciaPerfecta())
+	}
+
+	test "Pepe falto" {
+		pepe.faltas(5)
+		assert.notThat(pepe.asistenciaPerfecta())
+	}
+
+	test "La categoría base de medio tiempo es cadete. 
+          Pepe tiene categoría medio tiempo (o sea, es cadete y trabaja medio tiempo).
+          Tiene bono por resultados de porcentaje.
+          Tiene bono por presentismo demagógico. 
+          Falto una vez.
+          El sueldo de Pepe es de $11500" {
+		medioTiempo.categoriaBase(cadete)
+		pepe.categoria(medioTiempo)
+		pepe.bonoXResultados(bonoPorcentaje)
+		pepe.bonoXPresentismo(bonoDemagogico)
+		pepe.faltas(1)
+		assert.equals(11500, pepe.sueldo())
+	}
+
+	test "Roque tiene bono por resultados de monto fijo.
+          El sueldo de Roque es de $37800" {
+		roque.bonoXResultados(bonoMontoFijo)
+		assert.equals(37800, roque.sueldo())
+	}
+
+	test "Ernesto tiene como compañero a Pepe (que es cadete a medio tiempo)
+          Tiene bono por presentismo de ajuste.
+          El sueldo de Ernesto es $10100." {
+		medioTiempo.categoriaBase(cadete)
+		pepe.categoria(medioTiempo)
+		ernesto.companero(pepe)
+		ernesto.bonoXPresentismo(bonoAjuste)
+		assert.equals(10100, ernesto.sueldo())
+	}
+
+	test "Sofia es vendedora.
+          Hizo muchas ventas. 
+          Tiene bono por resultados de porcentaje.
+          El sueldo de Sofia es de $28600" {
+		sofia.categoria(vendedor)
+		sofia.ventas("muchasVentas")
+		sofia.bonoXResultados(bonoPorcentaje)
+		assert.equals(28600, sofia.sueldo())
+	}
+
 }
+
