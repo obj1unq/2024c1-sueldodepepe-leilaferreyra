@@ -1,17 +1,18 @@
 //EMPLEADOS 
 object pepe {
 
-	var property categoria = cadete // conviene usar property o solo hago un setter de la categoria? 
+	var property categoria = cadete  
 	var bonoXResultados = bonoXResultadosNulo
 	var bonoXPresentismo = bonoXPresentismoNulo
-	var property faltas = 0 // ATRIBUTOS // Property se usa para obtener getter y setter, si es constante devuelve solo getter 
+	var property faltas = 0
+	var property ventas = "ninguna"
 
 	method sueldo() {
 		return self.neto() + self.bonoXResultados() + self.bonoXPresentismo()
 	}
 
 	method neto() {
-		return categoria.neto()
+		return categoria.neto(self)
 	}
 
 	method bonoXResultados(_bonoXResultados) {
@@ -40,14 +41,14 @@ object sofia {
 
 	var property categoria = cadete
 	var bonoXResultados = bonoXResultadosNulo
-	var property faltas = 0
+	var property ventas = "ninguna"
 
 	method sueldo() {
 		return self.neto() + self.bonoXResultados()
 	}
 
 	method neto() {
-		return categoria.neto() * 1.3
+		return categoria.neto(self) * 1.3
 	}
 
 	method bonoXResultados() {
@@ -58,20 +59,16 @@ object sofia {
 		bonoXResultados = _bonoXResultados
 	}
 
-	method asistenciaPerfecta() {
-		return self.faltas() == 0
-	}
-
 }
 
 object roque {
 
 	var bonoXResultados = bonoXResultadosNulo
 	const sueldoFijo = 9000
-	const property neto = 28000 // conviene declararlo como constante o mas bien hacer el getter solamente? 
+	const property neto = 28000 
 
 	method sueldo() {
-		return neto + self.bonoXResultados() + sueldoFijo // puedo poner el 9000 directamente? 
+		return neto + self.bonoXResultados() + sueldoFijo 
 	}
 
 	method bonoXResultados() {
@@ -98,6 +95,10 @@ object ernesto {
 		return companero.neto()
 	}
 
+	method categoria() {
+		return companero.categoria()
+	}
+
 	method bonoXPresentismo() {
 		return bonoXPresentismo.valor(self)
 	}
@@ -115,7 +116,7 @@ object ernesto {
 //CATEGORIAS 
 object gerente {
 
-	method neto() {
+	method neto(empleado) {
 		return 15000
 	}
 
@@ -123,7 +124,7 @@ object gerente {
 
 object cadete {
 
-	method neto() {
+	method neto(empleado) {
 		return 20000
 	}
 
@@ -131,16 +132,24 @@ object cadete {
 
 object vendedor {
 
-	method neto() {
-		return 16000
+	method neto(empleado) {
+		return if (self.tieneMuchasVentas(empleado)) {
+			self.activarAumentoPorMuchasVentas()
+		} else {
+			self.desactivarAumentoPorMuchasVentas()
+		}
+	}
+
+	method tieneMuchasVentas(empleado) {
+		return empleado.ventas() == "muchasVentas"
 	}
 
 	method activarAumentoPorMuchasVentas() {
-		return self.neto() * 1.25
+		return 16000 * 1.25
 	}
 
 	method desactivarAumentoPorMuchasVentas() {
-		return self.neto() * 0.25
+		return 16000
 	}
 
 }
@@ -149,8 +158,8 @@ object medioTiempo {
 
 	var property categoriaBase = cadete
 
-	method neto() {
-		return categoriaBase.neto() / 2
+	method neto(empleado) {
+		return categoriaBase.neto(empleado) / 2
 	}
 
 }
